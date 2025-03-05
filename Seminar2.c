@@ -98,7 +98,7 @@ void copiazaMasiniCuMultiKm(struct Masina* vector, char nrElemente, float prag, 
 			if (vector[i].kilometriiParcursi > prag)
 			{
 				(*vectorNou)[contor] = vector[i]; // asta e shallow copy, recomandat e deep copy totusi adica folosim initializare()
-				(*vectorNou)[contor].sofer = malloc(sizeof(char) * (strlen(vector[i].sofer) + 1));
+				(*vectorNou)[contor].sofer = malloc(sizeof(char) * (strlen(vector[i].sofer) + 1)); // alocam memorie pentru sofer
 				strcpy_s((*vectorNou)[contor].sofer, strlen(vector[i].sofer) + 1, vector[i].sofer);
 				contor++;
 			}
@@ -135,25 +135,26 @@ int main() {
 
 	afisareVector(vector, nrElemente);
 
+	// facem un nou vector si lucram pe el pentru a nu strica vectorul initial, lucram pe o copie a lui si cautam sa luam doar primele 2 elemente
 	int nrElementeCopiate = 2;
-	struct Masina* vectorNou = copiazaPrimeleNElemente(vector, nrElemente, nrElementeCopiate);
+	struct Masina* vectorNou = copiazaPrimeleNElemente(vector, nrElemente, nrElementeCopiate); // copiem primele 2 masini
 
 	printf("\nMasini copiate");
-	afisareVector(vectorNou, nrElementeCopiate);
+	afisareVector(vectorNou, nrElementeCopiate); // afisam vectorul nou
 
-	dezalocare(&vectorNou, &nrElementeCopiate);
+	dezalocare(&vectorNou, &nrElementeCopiate); // dezalocam vectorul nou
 
 	float prag = 2000;
 	copiazaMasiniCuMultiKm(vector, nrElemente, prag, &vectorNou, &nrElementeCopiate);
-	printf("\nMasini cu multi km:");
+	printf("\nMasini cu multi km:\n");
 	afisareVector(vectorNou, nrElementeCopiate);
-	dezalocare(&vectorNou, &nrElementeCopiate);
+	dezalocare(&vectorNou, &nrElementeCopiate); 
 
 	printf("\nPrima masina dupa cautarea 'Marian'\n ");
 	struct Masina primaMasina = getPrimaMasinaDupaSofer(vector, nrElemente, "Marian");
 	afisare(primaMasina);
 
-	dezalocare(&vector, &nrElemente);
+	dezalocare(&vector, &nrElemente); 
 
 	return 0;
 }
